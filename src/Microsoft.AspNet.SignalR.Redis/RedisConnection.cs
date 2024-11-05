@@ -73,7 +73,7 @@ namespace Microsoft.AspNet.SignalR.Redis
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        public void Close(string key, bool allowCommandsToComplete = true)
+        public void Close(RedisChannel key, bool allowCommandsToComplete = true)
         {
             lock (_shutdownLock)
             {
@@ -98,7 +98,7 @@ namespace Microsoft.AspNet.SignalR.Redis
             }
         }
 
-        public async Task SubscribeAsync(string key, Action<int, RedisMessage> onMessage)
+        public async Task SubscribeAsync(RedisChannel key, Action<int, RedisMessage> onMessage)
         {
             _trace.TraceInformation("Subscribing to key: " + key);
             await _redisSubscriber.SubscribeAsync(key, (channel, data) =>

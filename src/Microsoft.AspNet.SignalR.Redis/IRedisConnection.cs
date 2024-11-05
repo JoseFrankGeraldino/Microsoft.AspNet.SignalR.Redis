@@ -5,6 +5,8 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+using StackExchange.Redis;
+
 namespace Microsoft.AspNet.SignalR.Redis
 {
     public interface IRedisConnection
@@ -12,9 +14,9 @@ namespace Microsoft.AspNet.SignalR.Redis
         Task ConnectAsync(string connectionString, TraceSource trace);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
-        void Close(string key, bool allowCommandsToComplete = true);
+        void Close(RedisChannel key, bool allowCommandsToComplete = true);
 
-        Task SubscribeAsync(string key, Action<int, RedisMessage> onMessage);
+        Task SubscribeAsync(RedisChannel key, Action<int, RedisMessage> onMessage);
 
         Task ScriptEvaluateAsync(int database, string script, string key, byte[] messageArguments);
 

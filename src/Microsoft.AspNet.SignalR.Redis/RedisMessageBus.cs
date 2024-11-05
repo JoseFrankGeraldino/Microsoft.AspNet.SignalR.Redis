@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.AspNet.SignalR.Messaging;
 using Microsoft.AspNet.SignalR.Tracing;
+
+using StackExchange.Redis;
 
 namespace Microsoft.AspNet.SignalR.Redis
 {
@@ -19,7 +22,7 @@ namespace Microsoft.AspNet.SignalR.Redis
         private const int DefaultBufferSize = 1000;
 
         private readonly int _db;
-        private readonly string _key;
+        private readonly RedisChannel _key;
         private readonly TraceSource _trace;
         private readonly ITraceManager _traceManager;
         private readonly IMessageEncryptor _messageEncryptor;
@@ -50,7 +53,7 @@ namespace Microsoft.AspNet.SignalR.Redis
 
             _connectionString = configuration.ConnectionString;
             _db = configuration.Database;
-            _key = configuration.EventKey;
+            _key = new RedisChannel(configuration.EventKey, RedisChannel.PatternMode.Auto);
 
             _traceManager = resolver.Resolve<ITraceManager>();
             _messageEncryptor = resolver.Resolve<IMessageEncryptor>();
